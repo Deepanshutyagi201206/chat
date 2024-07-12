@@ -1,0 +1,92 @@
+.sideBar {
+  padding: 0px 10px 0px 10px;
+  display: grid;
+  overflow: auto;
+  grid-template-rows: max-content auto max-content;
+  border-right: 1px solid var(--color-1);
+}
+.header {
+  padding: 20px;
+  border-bottom: 1px solid var(--color-1);
+}
+.header h1{
+  font-size: 28px;
+  line-height: 30px;
+}
+.usersContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  overflow: auto;
+}
+.usersContainer::-webkit-scrollbar {
+  display: none;
+}
+.button {
+  border: 0px;
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 6px;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+  cursor: pointer;
+  font-family: var(--font);
+  text-decoration: none;
+}
+.name {
+  font-size: 14px;
+  line-height: 18px;
+}
+.status {
+  font-size: 8px;
+  line-height: 12px;
+}
+.online {
+  color: var(--color-4);
+}
+.offline {
+  color: var(--color-5);
+}
+.button svg {
+  font-size: 30px;
+}
+
+.button:hover .status {
+  color: white;
+}
+.button:hover {
+  background-color: var(--color-2);
+  color: white;
+}
+.active {
+  background-color: var(--color-2);
+  color: white;
+}
+
+.active .status {
+  color: white;
+}
+.addUserContainer{
+  padding-bottom: 20px;
+}
+.addUserContainer button{
+  border: 1px solid var(--color-1);
+  background-color: white;
+  color: black;
+  padding: 11px 20px;
+  border-radius: 6px;
+  width: 100%;
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+  justify-content: center;
+  column-gap: 8px;
+  cursor: pointer;
+  font-family: var(--font);
+}

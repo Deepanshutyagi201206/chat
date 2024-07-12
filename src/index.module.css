@@ -1,0 +1,30 @@
+.boxContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0px 20px;
+}
+.box{
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    box-shadow: 0px 0px 10px var( --color-1);
+    border-radius: 8px;
+    padding: 60px 20px;
+}
+
+.box h1, .box a{
+    text-align: center;
+    font-family: var(--font);
+}
+
+.bottom p{
+    font-size: 14px;
+    line-height: 16px;
+    font-family: var(--font);
+    text-align: center;
+}
+

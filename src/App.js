@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { Toaster } from "react-hot-toast";
+import { Router } from "./routes";
+import { useEffect } from "react";
+import socket from "./socket";
+import { getLoggedInUserId, getToken } from "./functions";
 
 function App() {
+
+  useEffect(() => {
+
+    const token = getToken()
+    const id = getLoggedInUserId()
+
+    if (id && token) {
+      socket.auth = { token: token, userId: id };
+      socket.connect()
+    }
+
+    socket.on("connect", () => {
+      console.log("socket id", socket.id)
+      socket.emit("connectDisconnect", {
+        id: getLoggedInUserId(),
+        status: "Online"
+      })
+    })
+
+    socket.on("disconnect", () => {
+      console.log("disconnected", socket.id)
+
+      socket.emit("connectDisconnect", {
+        id: getLoggedInUserId(),
+        status: "Offline"
+      })
+    });
+
+    socket.on("connect_error", (err) => {
+      console.log("socket err", err)
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router />
+      <Toaster position="top-center" />
+    </>
   );
 }
 
