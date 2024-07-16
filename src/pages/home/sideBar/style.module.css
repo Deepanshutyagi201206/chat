@@ -5,14 +5,20 @@
   grid-template-rows: max-content auto max-content;
   border-right: 1px solid var(--color-1);
 }
+
 .header {
   padding: 20px;
   border-bottom: 1px solid var(--color-1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-.header h1{
+
+.header h1 {
   font-size: 28px;
   line-height: 30px;
 }
+
 .usersContainer {
   display: flex;
   flex-direction: column;
@@ -21,9 +27,11 @@
   padding-bottom: 20px;
   overflow: auto;
 }
+
 .usersContainer::-webkit-scrollbar {
   display: none;
 }
+
 .button {
   border: 0px;
   background-color: white;
@@ -33,26 +41,22 @@
   width: 100%;
   text-align: left;
   display: flex;
-  align-items: center;
-  column-gap: 8px;
+  justify-content: space-between;
   cursor: pointer;
   font-family: var(--font);
   text-decoration: none;
 }
+
 .name {
   font-size: 14px;
   line-height: 18px;
 }
-.status {
+
+.message {
   font-size: 8px;
   line-height: 12px;
 }
-.online {
-  color: var(--color-4);
-}
-.offline {
-  color: var(--color-5);
-}
+
 .button svg {
   font-size: 30px;
 }
@@ -60,10 +64,12 @@
 .button:hover .status {
   color: white;
 }
+
 .button:hover {
   background-color: var(--color-2);
   color: white;
 }
+
 .active {
   background-color: var(--color-2);
   color: white;
@@ -72,10 +78,12 @@
 .active .status {
   color: white;
 }
-.addUserContainer{
+
+.addUserContainer {
   padding-bottom: 20px;
 }
-.addUserContainer button{
+
+.addUserContainer button {
   border: 1px solid var(--color-1);
   background-color: white;
   color: black;
@@ -89,4 +97,80 @@
   column-gap: 8px;
   cursor: pointer;
   font-family: var(--font);
+}
+
+.profileContainer {
+  position: relative;
+}
+
+.profileButton {
+  background-color: white;
+  border: 0px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuContainer {
+  border-radius: 8px;
+  border: 1px solid var(--color-2);
+  position: absolute;
+  background-color: white;
+  right: 0px;
+  top: 30px;
+  box-shadow: 0px 0px 5px var(--color-1);
+}
+
+.menuContainer button {
+  font-size: 14px;
+  line-height: 14px;
+  background-color: white;
+  border: 0px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--color-2);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.menuContainer button:nth-child(1) {
+  border-radius: 8px 8px 0px 0px;
+}
+
+.menuContainer button:last-child {
+  border-bottom: 0px;
+  border-radius: 0px 0px 8px 8px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-2);
+  font-size: 14px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.active .avatar,
+.button:hover .avatar {
+  background-color: white;
+  color: black;
+}
+
+.info{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.time {
+  font-size: 8px;
+  line-height: 12px;
+}
+
+.userInfoContainer{
+  padding: 10px 20px;
 }

@@ -8,30 +8,13 @@ import getRequest from "../../../requests/get";
 import { getLoggedInUserId } from "../../../functions";
 import socket from "../../../socket";
 import moment from "moment";
+import { Avatar } from "@mui/material";
 
-export const Chat = ({ activeUser, messages, setMessages, onlineOfflineUsers }) => {
+export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users }) => {
 
   const currentUserId = getLoggedInUserId();
 
-  const [user, setUser] = useState();
-
   const [inputValue, setInputValue] = useState();
-
-  const getUser = async () => {
-    try {
-      const res = await getRequest({ url: `/user/${activeUser}` });
-
-      const { user } = res?.data;
-
-      if (user) {
-        setUser(user);
-      }
-
-
-    } catch (err) {
-      return err;
-    }
-  };
 
   const getConnectedUser = async () => {
     try {
@@ -42,6 +25,9 @@ export const Chat = ({ activeUser, messages, setMessages, onlineOfflineUsers }) 
       if (user) {
         setMessages(user?.messages)
       }
+      else {
+        setMessages([])
+      }
 
 
     } catch (err) {
@@ -51,13 +37,38 @@ export const Chat = ({ activeUser, messages, setMessages, onlineOfflineUsers }) 
 
   useEffect(() => {
     if (activeUser) {
-      getUser()
       getConnectedUser();
 
     }
+
   }, [activeUser]);
 
   const handleClickOnSend = () => {
+
+    const foundUser = users.find((item) => {
+
+      return item._id == activeUser
+
+    })
+
+    if (!foundUser) {
+      setUsers((prev) => {
+        return [
+          ...prev, {
+            name: user?.name,
+            _id: user?._id,
+            messages: [
+              {
+                message: inputValue,
+                date: new Date(),
+              }
+            ]
+          }
+        ]
+      })
+    }
+
+
 
     socket.emit("message", {
       from: currentUserId,
@@ -85,10 +96,10 @@ export const Chat = ({ activeUser, messages, setMessages, onlineOfflineUsers }) 
     <div className={style.chat}>
       <div className={style.chatheader}>
         <div className={style.headUser}>
-          <AccountCircleIcon />
+          <p className={style.avatar}>{user?.name?.substring(0, 1)}</p>
           <div>
             <p className={style.name}>{user?.name}</p>
-            {onlineOfflineUsers.includes(user?._id) ? <p className={`${style.status} ${style.online}`}>Online </p> : <p className={`${style.status} ${style.offline}`}>Offline </p>}
+            <p className={`${style.status}`}>{user?.status} </p>
           </div>
         </div>
         <div>
@@ -99,6 +110,7 @@ export const Chat = ({ activeUser, messages, setMessages, onlineOfflineUsers }) 
         {messages.map((item) => {
           return (
             <div
+              key={item._id}
               className={
                 item?.userId === currentUserId
                   ? style.firstPersonMsgs
@@ -116,10 +128,6 @@ export const Chat = ({ activeUser, messages, setMessages, onlineOfflineUsers }) 
                   <div>
                     <p className={style.name}>{item?.userId === currentUserId ? "You" : user?.name}</p>
                     <p className={style.time}>{moment(item.date).format('LT')}</p>
-                  </div>
-
-                  <div>
-                    <MoreVertIcon />
                   </div>
                 </div>
                 <p className={style.message}>{item.message}</p>

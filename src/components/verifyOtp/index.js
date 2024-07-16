@@ -6,7 +6,6 @@ import { ButtonComp } from "../button";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useNavigate } from "react-router-dom";
 import postRequest from "../../requests/post";
-import { getUsers } from "../../apisFunctions";
 import socket from "../../socket";
 
 export const VerifyOtp = ({ setIsReceivedOtp, phone }) => {

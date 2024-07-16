@@ -17,25 +17,20 @@ function App() {
     }
 
     socket.on("connect", () => {
-      console.log("socket id", socket.id)
-      socket.emit("connectDisconnect", {
-        id: getLoggedInUserId(),
-        status: "Online"
-      })
+
+      console.log("disconnect", socket.id);
+
     })
 
     socket.on("disconnect", () => {
-      console.log("disconnected", socket.id)
-
-      socket.emit("connectDisconnect", {
-        id: getLoggedInUserId(),
-        status: "Offline"
-      })
+      console.log("disconnect", socket.id); // undefined
     });
+
 
     socket.on("connect_error", (err) => {
       console.log("socket err", err)
     });
+
   }, []);
 
   return (

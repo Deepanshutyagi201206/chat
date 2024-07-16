@@ -5,7 +5,6 @@ import { TextField } from "@mui/material";
 export const Input = ({ label, id, variant, onChange, ...rest }) => {
   return (
     <TextField
-      classes="input"
       id={id}
       label={label}
       variant={variant}
