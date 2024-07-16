@@ -48,11 +48,11 @@
 
 .messages {
   background-color: var(--color-3);
-  padding: 20px;
+  padding: 20px 30px;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
-  overflow: auto;
+  overflow: auto; 
 }
 
 .messages::-webkit-scrollbar{
@@ -64,21 +64,40 @@
     flex-direction: column;
     row-gap: 4px;
 }
+.firstPersonMsg,
+.secondPersonMsg{
+  width: 100%;
+  max-width: 40%;
+  padding: 10px;
+  position: relative;
+}
 .firstPersonMsg {
   background-color: var(--color-2);
-  width: 100%;
-  max-width: 50%;
   margin-left: auto;
-  padding: 10px;
-  border-radius: 4px;
+  border-radius: 4px 0px 4px 4px;
 }
 .secondPersonMsg {
   background-color: white;
-  width: 100%;
-  max-width: 50%;
   margin-right: auto;
-  padding: 10px;
-  border-radius: 4px;
+  border-radius: 0px 4px 4px 4px;
+}
+.firstPersonMsg::after,
+.secondPersonMsg::before{
+  display: block;
+  content: "";
+  position: absolute;
+}
+.firstPersonMsg::after{
+  top: 0;
+  right: -9px;
+  border-top: 10px solid var(--color-2);
+  border-right: 10px solid transparent;
+}
+.secondPersonMsg::before{
+  top: 0;
+  left: -9px;
+  border-top: 10px solid white;
+  border-left: 10px solid transparent;
 }
 .message {
   font-size: 14px;

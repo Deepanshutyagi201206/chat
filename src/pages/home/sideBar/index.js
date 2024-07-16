@@ -68,9 +68,8 @@ export const SideBar = ({ setIsAddUserPopUp, users, setActiveUser, activeUser })
             open ?
               <div className={style.menuContainer}>
                 <div className={style.userInfoContainer}>
-                  <p>Hi, {user?.name}</p>
+                  <p>Hi,{user?.name}</p>
                 </div>
-                <button>Setting</button>
                 <button onClick={handleLogout}>Logout</button>
               </div> : ""
           }

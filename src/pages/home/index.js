@@ -63,6 +63,7 @@ export const Home = () => {
     })
 
     if (!user) {
+      
       handleGetUsers();
     }
 
