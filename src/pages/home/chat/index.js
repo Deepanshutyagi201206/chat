@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import style from "./style.module.css";
 import { Input } from "../../../components/input";
 import SendIcon from "@mui/icons-material/Send";
@@ -8,7 +7,7 @@ import getRequest from "../../../requests/get";
 import { getLoggedInUserId } from "../../../functions";
 import socket from "../../../socket";
 import moment from "moment";
-import { Avatar } from "@mui/material";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users }) => {
 
@@ -54,7 +53,7 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
     if (!foundUser) {
       setUsers((prev) => {
         return [
-          ...prev, {
+          {
             name: user?.name,
             _id: user?._id,
             messages: [
@@ -63,12 +62,24 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
                 date: new Date(),
               }
             ]
-          }
+          }, ...prev,
         ]
       })
     }
+    else {
 
+      const usersToSort = [...users]
 
+      for (var item = 0; item <= usersToSort.length - 1; item++) {
+        if (usersToSort[item]._id == activeUser) {
+          usersToSort[item].updatedAt = new Date()
+        }
+      }
+
+      console.log("usersToSort", usersToSort)
+
+      setUsers(usersToSort.sort((first, second) => second.updatedAt - first.updatedAt))
+    }
 
     socket.emit("message", {
       from: currentUserId,
@@ -127,10 +138,16 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
                 <div className={style.nameTimeContainer}>
                   <div>
                     <p className={style.name}>{item?.userId === currentUserId ? "You" : user?.name}</p>
-                    <p className={style.time}>{moment(item.date).format('LT')}</p>
+                    <p className={style.time}>{moment(item.date).calendar()}</p>
                   </div>
                 </div>
-                <p className={style.message}>{item.message}</p>
+                <div className={style.messageCheckContainer}>
+                  <p className={style.message}>{item.message}</p>
+
+                  {item?.userId === currentUserId ? <DoneAllIcon /> : ""}
+
+                </div>
+
               </div>
               {/* <div className={style.firstPersonMsg}>
             <p className={style.message}>I am sending message</p>

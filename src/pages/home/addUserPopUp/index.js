@@ -7,7 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import getRequest from "../../../requests/get";
 import { getLoggedInUserId } from "../../../functions";
 
-const AddUserPopUp = ({ setIsAddUserPopUp, isAddUserPopUp, setActiveUser }) => {
+const AddUserPopUp = ({ activeUserRef, setIsAddUserPopUp, isAddUserPopUp, setActiveUser }) => {
 
     const [users, setUsers] = useState([]);
 
@@ -44,8 +44,8 @@ const AddUserPopUp = ({ setIsAddUserPopUp, isAddUserPopUp, setActiveUser }) => {
                             <button
                             
                                 onClick={() => {
-                                    localStorage.setItem("activeUser", item._id)
                                     setActiveUser(item._id)
+                                    activeUserRef.current = item._id
                                     setIsAddUserPopUp(false)
                                 }}
                                 key={item?._id}

@@ -5,12 +5,12 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { getLoggedInUserId } from "../../../functions";
 import socket from "../../../socket";
 import { useNavigate } from "react-router-dom";
-import putRequest from "../../../requests/put";
-import { Avatar, Menu, MenuItem } from "@mui/material";
 import moment from "moment";
 import getRequest from "../../../requests/get";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import CheckIcon from '@mui/icons-material/Check';
 
-export const SideBar = ({ setIsAddUserPopUp, users, setActiveUser, activeUser }) => {
+export const SideBar = ({ activeUserRef, setIsAddUserPopUp, users, setActiveUser, activeUser, updateConnectedUser }) => {
 
   const navigate = useNavigate()
 
@@ -80,8 +80,11 @@ export const SideBar = ({ setIsAddUserPopUp, users, setActiveUser, activeUser })
           return (
             <button
               onClick={() => {
+                if (item.newMessages.length > 0) {
+                  updateConnectedUser(item._id)
+                }
                 setActiveUser(item._id)
-                localStorage.setItem("activeUser", item._id)
+                activeUserRef.current = item._id
               }}
               key={item?._id}
               className={`${style.button} ${item._id === activeUser ? style.active : ""
@@ -91,16 +94,31 @@ export const SideBar = ({ setIsAddUserPopUp, users, setActiveUser, activeUser })
                 <p className={style.avatar}>{item?.name?.substring(0, 1)}</p>
                 <div>
                   <p className={style.name}>{item?.name}</p>
-                  <p className={`${style.message}`}>{
-                    item?.messages[item?.messages?.length - 1]?.message
-                  } </p>
+                  <div className={style.messageCheckContainer}>
+
+                    {
+                      item?.messages[item?.messages?.length > 1 ? item?.messages?.length - 1 : item?.messages?.length]?.userId === getLoggedInUserId() ? <>{item.newMessages.length > 0 ? <CheckIcon /> : <DoneAllIcon />}</> : ""
+                    }
+                    <p className={`${style.message}`}>
+                      {
+                        item?.messages[item?.messages?.length - 1]?.message
+                      } </p>
+
+                  </div>
+
 
                 </div>
               </div>
               <div>
-                <p className={`${style.time}`}>{
-                  moment(item?.messages[item?.messages?.length - 1]?.date).format("LT")
-                } </p>
+                <p className={`${style.time}`}>
+
+                  {
+                    moment(item?.messages[item?.messages?.length > 1 ? item?.messages?.length - 1 : item?.messages?.length]?.date).calendar()
+                  } </p>
+                {
+                  item?.newMessages?.length > 0 && item._id != activeUser ? <p className={`${style.badge}`}>{item.newMessages.length} </p> : ""
+                }
+
               </div>
             </button>
           );

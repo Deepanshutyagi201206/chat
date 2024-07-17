@@ -15,6 +15,7 @@ export const Home = () => {
   const [users, setUsers] = useState([]);
   const usersRef = useRef(users);
   const [activeUser, setActiveUser] = useState()
+  const activeUserRef = useRef(activeUser);
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState();
 
@@ -26,6 +27,22 @@ export const Home = () => {
 
       if (user) {
         setUser(user);
+      }
+
+
+    } catch (err) {
+      return err;
+    }
+  };
+
+  const updateConnectedUser = async (secondUserId) => {
+    try {
+      const res = await putRequest({ url: `/connected-user/${getLoggedInUserId()}/${secondUserId}`, body: { newMessages: [] } });
+
+      const { user } = res?.data;
+
+      if (user) {
+        handleGetUsers();
       }
 
 
@@ -53,21 +70,13 @@ export const Home = () => {
 
   const handleMessageTo = ({ data }) => {
 
-    const activeUser = localStorage.getItem("activeUser")
-    const users = usersRef.current
+    const activeUser = activeUserRef.current
 
-    const user = users.find((item) => {
-
-      return item._id == data.from
-
-    })
-
-    if (!user) {
-      
-      handleGetUsers();
-    }
+    handleGetUsers();
 
     if (data.from == activeUser) {
+
+      updateConnectedUser(data.from)
 
       setMessages((prev) => {
         return [...prev, data.message]
@@ -94,6 +103,11 @@ export const Home = () => {
       handleMessageTo(data)
     })
 
+    socket.on("updateUsers", (data) => {
+
+      handleGetUsers();
+    })
+
     socket.emit("updateStatus", {
       id: getLoggedInUserId(),
       status: "Online"
@@ -101,7 +115,7 @@ export const Home = () => {
 
     socket.on("getStatus", (data) => {
 
-      const activeUser = localStorage.getItem("activeUser")
+      const activeUser = activeUserRef.current
 
       if (activeUser == data.id) {
 
@@ -129,14 +143,14 @@ export const Home = () => {
   return (
     <>
       <div className={style.home}>
-        <SideBar activeUser={activeUser} setActiveUser={setActiveUser} setIsAddUserPopUp={setIsAddUserPopUp} users={users} />
+        <SideBar activeUserRef={activeUserRef} updateConnectedUser={updateConnectedUser} activeUser={activeUser} setActiveUser={setActiveUser} setIsAddUserPopUp={setIsAddUserPopUp} users={users} />
 
-        {activeUser ? <Chat users={users} setUsers = {setUsers} user={user} activeUser={activeUser} setMessages={setMessages} messages={messages} /> : <NoActiveChat />}
+        {activeUser ? <Chat users={users} setUsers={setUsers} user={user} activeUser={activeUser} setMessages={setMessages} messages={messages} /> : <NoActiveChat />}
 
       </div>
 
       {
-        isAddUserPopUp ? <AddUserPopUp setActiveUser={setActiveUser} isAddUserPopUp={isAddUserPopUp} setIsAddUserPopUp={setIsAddUserPopUp} /> : ""
+        isAddUserPopUp ? <AddUserPopUp activeUserRef={activeUserRef} setActiveUser={setActiveUser} isAddUserPopUp={isAddUserPopUp} setIsAddUserPopUp={setIsAddUserPopUp} /> : ""
       }
     </>
   );
