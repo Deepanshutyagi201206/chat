@@ -8,6 +8,8 @@ import { getLoggedInUserId } from "../../../functions";
 import socket from "../../../socket";
 import moment from "moment";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import CheckIcon from '@mui/icons-material/Check';
+import globalStyles from "../../../index.module.css"
 
 export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users }) => {
 
@@ -15,6 +17,7 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
 
   const [inputValue, setInputValue] = useState();
 
+  
   const getConnectedUser = async () => {
     try {
       const res = await getRequest({ url: `/connected-user/${currentUserId}/${activeUser}` });
@@ -43,43 +46,6 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
   }, [activeUser]);
 
   const handleClickOnSend = () => {
-
-    const foundUser = users.find((item) => {
-
-      return item._id == activeUser
-
-    })
-
-    if (!foundUser) {
-      setUsers((prev) => {
-        return [
-          {
-            name: user?.name,
-            _id: user?._id,
-            messages: [
-              {
-                message: inputValue,
-                date: new Date(),
-              }
-            ]
-          }, ...prev,
-        ]
-      })
-    }
-    else {
-
-      const usersToSort = [...users]
-
-      for (var item = 0; item <= usersToSort.length - 1; item++) {
-        if (usersToSort[item]._id == activeUser) {
-          usersToSort[item].updatedAt = new Date()
-        }
-      }
-
-      console.log("usersToSort", usersToSort)
-
-      setUsers(usersToSort.sort((first, second) => second.updatedAt - first.updatedAt))
-    }
 
     socket.emit("message", {
       from: currentUserId,
@@ -144,7 +110,7 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
                 <div className={style.messageCheckContainer}>
                   <p className={style.message}>{item.message}</p>
 
-                  {item?.userId === currentUserId ? <DoneAllIcon /> : ""}
+                  {item?.userId === currentUserId ? <>{item?.isRead ? <div className={`${globalStyles.messageCheck} ${style.read}`}><DoneAllIcon /></div> : <div className={`${globalStyles.messageCheck} ${globalStyles.unread}`}><CheckIcon /></div>}</> : ""}
 
                 </div>
 

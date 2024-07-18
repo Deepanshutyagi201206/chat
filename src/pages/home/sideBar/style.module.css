@@ -66,17 +66,11 @@
 }
 
 .button:hover {
-  background-color: var(--color-2);
-  color: white;
+  background-color: var(--color-6);
 }
 
 .active {
-  background-color: var(--color-2);
-  color: white;
-}
-
-.active .status {
-  color: white;
+  background-color: var(--color-6);
 }
 
 .addUserContainer {
@@ -156,11 +150,6 @@
   color: white;
 }
 
-.active .avatar,
-.button:hover .avatar {
-  background-color: white;
-  color: black;
-}
 
 .info {
   display: flex;
@@ -191,12 +180,6 @@
   color: white;
   margin-top: 2px;
   margin-left: auto;
-}
-
-.active .badge,
-.button:hover .badge {
-  background-color: white;
-  color: black;
 }
 
 .messageCheckContainer{

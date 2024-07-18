@@ -9,6 +9,7 @@ import moment from "moment";
 import getRequest from "../../../requests/get";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import CheckIcon from '@mui/icons-material/Check';
+import globalStyles from "../../../index.module.css"
 
 export const SideBar = ({ activeUserRef, setIsAddUserPopUp, users, setActiveUser, activeUser, updateConnectedUser }) => {
 
@@ -97,7 +98,7 @@ export const SideBar = ({ activeUserRef, setIsAddUserPopUp, users, setActiveUser
                   <div className={style.messageCheckContainer}>
 
                     {
-                      item?.messages[item?.messages?.length > 1 ? item?.messages?.length - 1 : item?.messages?.length]?.userId === getLoggedInUserId() ? <>{item.newMessages.length > 0 ? <CheckIcon /> : <DoneAllIcon />}</> : ""
+                      item?.messages[item?.messages?.length > 1 ? item?.messages?.length - 1 : item?.messages?.length]?.userId === getLoggedInUserId() ? <>{item?.messages[item?.messages?.length > 1 ? item?.messages?.length - 1 : item?.messages?.length]?.isRead ? <div className={`${globalStyles.messageCheck} ${globalStyles.read}`}><DoneAllIcon /></div> : <div className={`${globalStyles.messageCheck} ${globalStyles.unread}`}><CheckIcon /></div>}</> : ""
                     }
                     <p className={`${style.message}`}>
                       {

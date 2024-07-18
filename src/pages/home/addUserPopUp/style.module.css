@@ -47,6 +47,7 @@
 }
 .button svg {
   font-size: 30px;
+  color: var(--color-1);
 }
 
 .button:hover .status {
@@ -54,6 +55,9 @@
 }
 .button:hover {
   background-color: var(--color-2);
+  color: white;
+}
+.button:hover svg{
   color: white;
 }
 .active {
