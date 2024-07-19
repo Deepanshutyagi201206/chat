@@ -16,7 +16,6 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
   const currentUserId = getLoggedInUserId();
 
   const [inputValue, setInputValue] = useState();
-
   
   const getConnectedUser = async () => {
     try {

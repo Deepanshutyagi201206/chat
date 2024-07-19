@@ -1,7 +1,12 @@
 .noChat {
   background-color: var(--color-3);
   display: flex;
+  flex-direction: column;
+  gap: 10px;
   justify-content: center;
   align-items: center;
   font-family: var(--font);
+}
+.noChat svg{
+  font-size: 26px;
 }

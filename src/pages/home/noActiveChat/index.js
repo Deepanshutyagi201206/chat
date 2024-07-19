@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import React from "react";
 import style from "./style.module.css";
-import { Input } from "../../../components/input";
-import SendIcon from "@mui/icons-material/Send";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { io } from "socket.io-client";
-import getRequest from "../../../requests/get";
+import MessageIcon from '@mui/icons-material/Message';
 
-export const NoActiveChat = ({ activeUser }) => {
-  
+export const NoActiveChat = () => {
+
   return (
     <div className={style.noChat}>
-      <p>There is no active chat</p>
+      <MessageIcon />
+      <p>There is no message, Please start conversation</p>
     </div>
   );
 };
