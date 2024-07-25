@@ -17,6 +17,7 @@ export const Home = () => {
   const [activeUser, setActiveUser] = useState()
   const activeUserRef = useRef(activeUser);
   const [messages, setMessages] = useState([]);
+  const [newMessages, setNewMessages] = useState([]);
   const [user, setUser] = useState();
 
   const getUser = async () => {
@@ -83,6 +84,8 @@ export const Home = () => {
       })
     }
 
+    socket.emit("delivered", data)
+
   }
 
   useEffect(() => {
@@ -103,8 +106,15 @@ export const Home = () => {
       handleMessageTo(data)
     })
 
-    socket.on("updateUsers", (data) => {
+    socket.on("delivered", (data) => {
+      handleMessageTo(data)
+    })
 
+    socket.on("read", (data) => {
+      handleGetUsers();
+    })
+
+    socket.on("updateUsers", (data) => {
       handleGetUsers();
     })
 
@@ -145,7 +155,7 @@ export const Home = () => {
       <div className={style.home}>
         <SideBar activeUserRef={activeUserRef} updateConnectedUser={updateConnectedUser} activeUser={activeUser} setActiveUser={setActiveUser} setIsAddUserPopUp={setIsAddUserPopUp} users={users} />
 
-        {activeUser ? <Chat users={users} setUsers={setUsers} user={user} activeUser={activeUser} setMessages={setMessages} messages={messages} /> : <NoActiveChat />}
+        {activeUser ? <Chat newMessages={newMessages} setNewMessages={setNewMessages} updateConnectedUser={updateConnectedUser} users={users} setUsers={setUsers} user={user} activeUser={activeUser} setMessages={setMessages} messages={messages} /> : <NoActiveChat />}
 
       </div>
 

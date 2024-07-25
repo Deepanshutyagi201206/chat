@@ -11,7 +11,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import CheckIcon from '@mui/icons-material/Check';
 import globalStyles from "../../../index.module.css"
 
-export const SideBar = ({ activeUserRef, setIsAddUserPopUp, users, setActiveUser, activeUser, updateConnectedUser }) => {
+export const SideBar = ({ activeUserRef, setIsAddUserPopUp, users, setActiveUser, activeUser }) => {
 
   const navigate = useNavigate()
 
@@ -81,9 +81,6 @@ export const SideBar = ({ activeUserRef, setIsAddUserPopUp, users, setActiveUser
           return (
             <button
               onClick={() => {
-                if (item.newMessages.length > 0) {
-                  updateConnectedUser(item._id)
-                }
                 setActiveUser(item._id)
                 activeUserRef.current = item._id
               }}

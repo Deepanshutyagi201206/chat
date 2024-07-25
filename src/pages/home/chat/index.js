@@ -11,12 +11,12 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import CheckIcon from '@mui/icons-material/Check';
 import globalStyles from "../../../index.module.css"
 
-export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users }) => {
+export const Chat = ({ newMessages, setNewMessages, activeUser, messages, setMessages, user, updateConnectedUser }) => {
 
   const currentUserId = getLoggedInUserId();
 
   const [inputValue, setInputValue] = useState();
-  
+
   const getConnectedUser = async () => {
     try {
       const res = await getRequest({ url: `/connected-user/${currentUserId}/${activeUser}` });
@@ -25,9 +25,11 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
 
       if (user) {
         setMessages(user?.messages)
+        setNewMessages(user?.newMessages)
       }
       else {
         setMessages([])
+        setNewMessages([])
       }
 
 
@@ -36,8 +38,24 @@ export const Chat = ({ activeUser, messages, setMessages, user, setUsers, users 
     }
   };
 
+
+  useEffect(() => {
+
+    socket.emit("read", newMessages)
+
+    if (activeUser) {
+
+      if (newMessages.length > 0) {
+        updateConnectedUser(activeUser)
+      }
+
+    }
+
+  }, [activeUser, newMessages]);
+
   useEffect(() => {
     if (activeUser) {
+
       getConnectedUser();
 
     }
