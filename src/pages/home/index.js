@@ -75,18 +75,19 @@ export const Home = () => {
 
     handleGetUsers();
 
-    if (data.from == activeUser) {
+    if (data.userId == activeUser) {
 
-      updateConnectedUser(data.from)
+      updateConnectedUser(data.userId)
 
       setMessages((prev) => {
-        return [...prev, data.message]
+        return [...prev, data]
       })
     }
 
     socket.emit("delivered", data)
 
   }
+
 
   useEffect(() => {
 
@@ -106,7 +107,7 @@ export const Home = () => {
       handleMessageTo(data)
     })
 
-    socket.on("delivered", (data) => {
+    socket.on("deliveredMessage", (data) => {
       handleMessageTo(data)
     })
 
