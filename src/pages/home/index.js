@@ -43,6 +43,7 @@ export const Home = () => {
       const { user } = res?.data;
 
       if (user) {
+        setNewMessages([])
         handleGetUsers();
       }
 
@@ -82,9 +83,19 @@ export const Home = () => {
       setMessages((prev) => {
         return [...prev, data]
       })
+      setNewMessages((prev) => {
+        return [...prev, data]
+      })
     }
 
-    socket.emit("delivered", data)
+    const dataToBeSend = {
+      ...data,
+      isDelivered: true,
+    }
+
+    console.log("data", dataToBeSend)
+
+    socket.emit("delivered", dataToBeSend)
 
   }
 
@@ -108,11 +119,13 @@ export const Home = () => {
     })
 
     socket.on("deliveredMessage", (data) => {
-      handleMessageTo(data)
+
+      console.log("deliveredMessage", data)
+      // handleMessageTo(data)
     })
 
     socket.on("read", (data) => {
-      handleGetUsers();
+      console.log("read", data)
     })
 
     socket.on("updateUsers", (data) => {

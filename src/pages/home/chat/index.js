@@ -41,11 +41,25 @@ export const Chat = ({ newMessages, setNewMessages, activeUser, messages, setMes
 
   useEffect(() => {
 
-    socket.emit("read", newMessages)
 
     if (activeUser) {
 
       if (newMessages.length > 0) {
+
+        let userId
+        const tempNewMessages = [...newMessages]
+
+        tempNewMessages.forEach((item) => {
+          userId = item.userId
+          item.isRead = true
+          item.isDelivered = true
+        })
+
+        const data = {
+          userId: userId,
+          messages: tempNewMessages
+        }
+        socket.emit("read", data)
         updateConnectedUser(activeUser)
       }
 
